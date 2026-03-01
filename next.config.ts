@@ -1,7 +1,14 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+import createNextIntlPlugin from 'next-intl/plugin';
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+const withNextIntl = createNextIntlPlugin();
 
-export default nextConfig;
+export default withNextIntl({
+    reactStrictMode: false,
+    images: {
+        remotePatterns: [
+            { protocol: 'https', hostname: '*', pathname: '**' },
+            { protocol: 'http', hostname: '*', pathname: '**' },
+        ],
+    },
+});

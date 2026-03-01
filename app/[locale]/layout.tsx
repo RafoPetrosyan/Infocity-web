@@ -1,0 +1,51 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { getMessages } from 'next-intl/server';
+import {SessionWrapper} from "@/app/wrappers/session-wrapper";
+import {LocalizationProvider} from "@/app/wrappers/localization-provider";
+import {Locales} from "@/app/constants";
+import {NextIntlClientProvider} from "next-intl";
+import "../globals.css";
+
+interface LayoutProps {
+    children: React.ReactNode;
+    params: Promise<{
+        locale: string;
+    }>;
+}
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "IMCITY - Intelligent Information Hub",
+  description: "Your intelligent information hub. Connect, discover, and explore the future of digital experiences.",
+};
+
+export default async function RootLayout({children, params}: Readonly<LayoutProps>) {
+    const { locale } = await params;
+    const messages = await getMessages();
+
+  return (
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+      <SessionWrapper>
+          <LocalizationProvider locale={locale as Locales}>
+              <NextIntlClientProvider messages={messages}>
+                 {children}
+              </NextIntlClientProvider>
+          </LocalizationProvider>
+      </SessionWrapper>
+      </body>
+    </html>
+  );
+}

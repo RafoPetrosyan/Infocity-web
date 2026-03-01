@@ -1,0 +1,46 @@
+category,key,en,hy,ru
+Auth,brand,IMCITY,IMCITY,IMCITY
+Auth,logoAlt,IMCITY logo,IMCITY լոգո,Логотип IMCITY
+Auth,loginTitle,Welcome back,Բարի վերադարձ,С возвращением
+Auth,loginSubtitle,Sign in to discover events, places, and services.,Մուտք գործեք՝ միջոցառումներ, վայրեր և ծառայություններ բացահայտելու համար.,Войдите, чтобы открыть события, места и сервисы.
+Auth,emailLabel,Email,Էլ. փոստ,Эл. почта
+Auth,emailPlaceholder,name@email.com,name@email.com,name@email.com
+Auth,passwordLabel,Password,Գաղտնաբառ,Пароль
+Auth,passwordPlaceholder,••••••••,••••••••,••••••••
+Auth,rememberMe,Remember me,Հիշել ինձ,Запомнить меня
+Auth,forgotPasswordLink,Forgot password?,Մոռացե՞լ եք գաղտնաբառը,Забыли пароль?
+Auth,signInButton,Sign in,Մուտք գործել,Войти
+Auth,continueWith,or continue with,կամ շարունակել,или продолжить с
+Auth,google,Google,Google,Google
+Auth,facebook,Facebook,Facebook,Facebook
+Auth,noAccount,Don't have an account?,Չունե՞ք հաշիվ,Нет аккаунта?
+Auth,createOne,Create one,Ստեղծել,Создать
+Auth,registerTitle,Create your account,Ստեղծեք ձեր հաշիվը,Создайте аккаунт
+Auth,registerSubtitle,Start exploring the city with your personal profile.,Սկսեք քաղաքը ուսումնասիրել ձեր անձնական պրոֆիլով.,Начните исследовать город с личным профилем.
+Auth,fullNameLabel,Full name,Ամբողջական անուն,Полное имя
+Auth,fullNamePlaceholder,Your name,Ձեր անունը,Ваше имя
+Auth,createPasswordPlaceholder,Create a password,Ստեղծեք գաղտնաբառ,Придумайте пароль
+Auth,confirmPasswordLabel,Confirm password,Հաստատեք գաղտնաբառը,Подтвердите пароль
+Auth,confirmPasswordPlaceholder,Repeat password,Կրկնեք գաղտնաբառը,Повторите пароль
+Auth,createAccountButton,Create account,Ստեղծել հաշիվ,Создать аккаунт
+Auth,signUpWith,or sign up with,կամ գրանցվել,или зарегистрироваться через
+Auth,alreadyHaveAccount,Already have an account?,Արդեն ունե՞ք հաշիվ,Уже есть аккаунт?
+Auth,signInLink,Sign in,Մուտք գործել,Войти
+Auth,forgotTitle,Forgot password,Մոռացել եք գաղտնաբառը,Забыли пароль
+Auth,forgotSubtitle,Enter your email and we'll send a reset link.,Մուտքագրեք ձեր էլ. փոստը, և մենք կուղարկենք վերականգնման հղումը.,Введите эл. почту, и мы отправим ссылку для сброса.
+Auth,sendResetLink,Send reset link,Ուղարկել վերականգնման հղումը,Отправить ссылку для сброса
+Auth,rememberedPassword,Remembered your password?,Հիշեցիք գաղտնաբառը,Вспомнили пароль?
+Auth,backToSignIn,Back to sign in,Վերադառնալ մուտքին,Назад ко входу
+Auth,verifyTitle,Confirm your email,Հաստատեք ձեր էլ. փոստը,Подтвердите эл. почту
+Auth,verifySubtitle,We sent a 6-digit code to your email. Enter it below to verify your account.,Մենք ձեր էլ. փոստին ուղարկել ենք 6-նիշանոց կոդ։ Մուտքագրեք այն ներքևում՝ ձեր հաշիվը հաստատելու համար.,Мы отправили 6-значный код на вашу эл. почту. Введите его ниже, чтобы подтвердить аккаунт.
+Auth,verificationCodeLabel,Verification code,Հաստատման կոդ,Код подтверждения
+Auth,verificationCodePlaceholder,••••••,••••••,••••••
+Auth,verifyEmailButton,Verify email,Հաստատել էլ. փոստը,Подтвердить эл. почту
+Auth,didntReceiveCode,Didn't receive the code?,Չե՞ք ստացել կոդը,Не получили код?
+Auth,resend,Resend,Կրկին ուղարկել,Отправить снова
+Auth,validationRequired,This field is required,This field is required,This field is required
+Auth,validationEmail,Enter a valid email,Enter a valid email,Enter a valid email
+Auth,validationPasswordMin,Password must be at least 8 characters,Password must be at least 8 characters,Password must be at least 8 characters
+Auth,validationFullNameMin,Full name must be at least 2 characters,Full name must be at least 2 characters,Full name must be at least 2 characters
+Auth,validationPasswordMatch,Passwords do not match,Passwords do not match,Passwords do not match
+Auth,validationCodeLength,Enter the 6-digit code,Enter the 6-digit code,Enter the 6-digit code
