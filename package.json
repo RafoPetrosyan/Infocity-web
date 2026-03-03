@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.6",
     "dayjs": "^1.11.19",
     "next": "16.1.6",
@@ -17,7 +18,9 @@
     "papaparse": "^5.5.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-hook-form": "^7.71.2"
+    "react-hook-form": "^7.71.2",
+    "react-redux": "^9.2.0",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -27,6 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
 import createMiddleware from 'next-intl/middleware';
-import {Locales, LOCALES} from "@/app/constants";
+import { Locales, LOCALES } from '@/constants';
 
 const secret = process.env.NEXTAUTH_SECRET as string;
 
@@ -23,13 +23,6 @@ const handleLocaleMiddleware = async (req: NextRequest) => {
 
   const token = await getToken({ req, secret });
   const pathname = req.nextUrl.pathname;
-
-  if (/^\/(en|hy|ru)?\/?admin(\/|$)/.test(pathname)) {
-    // @ts-ignore
-    if (!token || token.userData?.role !== 'admin') {
-      return NextResponse.redirect(new URL('/auth-admin/sign-in', req.url));
-    }
-  }
 
   if (/^\/(en|hy|ru)?\/?profile(\/|$)/.test(pathname)) {
     // @ts-ignore

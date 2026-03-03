@@ -20,8 +20,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
     skipEmptyLines: true,
   });
 
-  console.log( parsed.data, ' parsed.data')
-
   const messages: Record<string, any> = {};
 
   for (const row of parsed.data as any[]) {

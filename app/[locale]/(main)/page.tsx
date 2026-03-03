@@ -65,7 +65,7 @@ export default function Home() {
         <header className="flex flex-col gap-4 py-6 md:py-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
-              <Image src="/Logo.png" alt="IMCITY logo" width={32} height={32} />
+              <img src="/Logo.png" alt="IMCITY logo" width={32} height={32} />
             </div>
             <div>
               <p className="text-sm text-[var(--color-muted)]">Location</p>

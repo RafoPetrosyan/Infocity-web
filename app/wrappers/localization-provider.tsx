@@ -7,8 +7,7 @@ import 'dayjs/locale/hy-am';
 
 import tz from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import {DAY_JS_LOCALES, Locales} from "@/app/constants";
-
+import { DAY_JS_LOCALES, Locales } from '@/constants';
 
 export interface LocalizationProviderProps {
   children: React.ReactNode;

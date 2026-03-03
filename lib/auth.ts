@@ -23,24 +23,32 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/sign-in`, {
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/sign-in`, {
             email: credentials?.email,
             password: credentials?.password,
           });
 
-          const user = res.data?.data?.user;
-          const accessToken = res.data?.data?.accessToken;
+          const user = res.data?.user;
+          const accessToken = res.data?.access_token;
+          const refreshToken = res.data?.refresh_token;
+          const verificationToken = res.data?.verification_token;
 
           if (user && accessToken) {
             return {
               ...user,
               accessToken,
+              refreshToken,
+            };
+          }
+
+          if (verificationToken) {
+            return {
+              verificationToken,
             };
           }
 
           return null;
-        } catch (error) {
-          // @ts-ignore
+        } catch (error: any) {
           const message = error?.response?.data?.message || error?.message || 'Something went wrong';
           throw new Error(message);
         }
@@ -49,6 +57,20 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'credentials') {
+        if (!user) return false;
+
+        if ((user as any).verificationToken) {
+          return `${process.env.NEXTAUTH_URL}verify-email?token=${(user as any).verificationToken}`;
+        }
+
+        return true; // ✅ allow login
+      }
+
+      return true;
+    },
+
     async jwt({ token, account, profile, session, trigger, user }) {
       if (trigger === 'update' && session?.userData) {
         // @ts-ignore
@@ -58,13 +80,22 @@ export const authOptions: NextAuthOptions = {
 
       if (trigger === 'update' && session?.accessToken) {
         token.accessToken = session.accessToken;
+        token.refreshToken = session.refreshToken;
         return token;
+      }
+
+      // @ts-ignore
+      if (user?.verificationToken) {
+        // @ts-ignore
+        token.verificationToken = user.verificationToken;
       }
 
       // @ts-ignore
       if (user?.accessToken) {
         // @ts-ignore
         token.accessToken = user.accessToken;
+        // @ts-ignore
+        token.refreshToken = user.refreshToken;
         token.userData = user;
         return token;
       }
@@ -79,6 +110,7 @@ export const authOptions: NextAuthOptions = {
 
           token = {
             accessToken: response?.data.data.accessToken,
+            refreshToken: response?.data.data.refreshToken,
             userData: {
               ...response?.data.data.user,
               avatar: token.picture,
