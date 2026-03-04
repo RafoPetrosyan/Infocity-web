@@ -46,13 +46,7 @@ httpClient.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-    // 🔴 NEW: logout immediately on 403
-    if (error.response?.status === 403) {
-      await logoutUser();
-      return Promise.reject(error);
-    }
-
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 403 && !originalRequest._retry) {
       if (typeof window === 'undefined') {
         return Promise.reject(error);
       }
@@ -78,8 +72,8 @@ httpClient.interceptors.response.use(
         const refreshToken = localStorage.getItem('refreshToken');
         if (!refreshToken) throw new Error('No refresh token available');
 
-        const refreshResponse = await axios.post(`${API_BASE_URL}/token/refresh`, {
-          refreshToken,
+        const refreshResponse = await axios.post(`${API_BASE_URL}/users/refresh-token`, {
+          refresh_token: refreshToken,
         });
 
         const newAccessToken = refreshResponse.data?.accessToken;
