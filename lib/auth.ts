@@ -21,8 +21,15 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      async authorize(credentials: any) {
         try {
+          if (credentials.mode === 'update') {
+            return {
+              accessToken: credentials.accessToken,
+              refreshToken: credentials.refreshToken,
+            };
+          }
+
           const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/sign-in`, {
             email: credentials?.email,
             password: credentials?.password,
@@ -72,15 +79,17 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, profile, session, trigger, user }) {
-      if (trigger === 'update' && session?.userData) {
-        // @ts-ignore
-        token.userData = { ...token.userData, ...session.userData };
-        return token;
-      }
-
-      if (trigger === 'update' && session?.accessToken) {
-        token.accessToken = session.accessToken;
-        token.refreshToken = session.refreshToken;
+      if (trigger === 'update' && session) {
+        if (session.accessToken) {
+          token.accessToken = session.accessToken;
+        }
+        if (session.refreshToken) {
+          token.refreshToken = session.refreshToken;
+        }
+        if (session.userData) {
+          // @ts-ignore
+          token.userData = { ...token.userData, ...session.userData };
+        }
         return token;
       }
 
@@ -102,6 +111,7 @@ export const authOptions: NextAuthOptions = {
 
       if (account && profile) {
         token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
         try {
           const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/sign-social`, {
             email: profile.email,

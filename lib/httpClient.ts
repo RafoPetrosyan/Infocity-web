@@ -76,17 +76,21 @@ httpClient.interceptors.response.use(
           refresh_token: refreshToken,
         });
 
-        const newAccessToken = refreshResponse.data?.accessToken;
-        if (!newAccessToken) throw new Error('Failed to get new access token');
+        const newAccessToken = refreshResponse.data?.access_token;
+        const newRefreshToken = refreshResponse.data?.refresh_token;
+        if (!newAccessToken && !newRefreshToken) throw new Error('Failed to get new access token');
 
         localStorage.setItem('accessToken', newAccessToken);
+        localStorage.setItem('refreshToken', newRefreshToken);
 
         // update next-auth session
         const { signIn } = await import('next-auth/react');
         await signIn('credentials', {
+          mode: 'update',
           redirect: false,
           accessToken: newAccessToken,
-          refreshToken: refreshToken,
+          refreshToken: newRefreshToken,
+          user: refreshResponse.data.user,
         });
 
         // Update the original request with new token
@@ -105,7 +109,7 @@ httpClient.interceptors.response.use(
         processQueue(refreshError, null);
         isRefreshing = false;
 
-        await logoutUser();
+        // await logoutUser();
         return Promise.reject(refreshError);
       }
     }

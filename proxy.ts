@@ -1,81 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { withAuth } from 'next-auth/middleware';
 import createMiddleware from 'next-intl/middleware';
-import { Locales, LOCALES } from '@/constants';
+import { LOCALES } from '@/constants';
 
-const secret = process.env.NEXTAUTH_SECRET as string;
+// 1. Define your Route Arrays
+const PROTECTED_ROUTES = ['/profile'];
+const GUEST_ONLY_ROUTES = ['/login', '/register', '/forgot-password', '/verify-email'];
 
-const handleLocaleMiddleware = async (req: NextRequest) => {
-  const cookieLocale: Locales = (req.cookies.get('NEXT_LOCALE')?.value as Locales | undefined) || 'hy';
+const intlMiddleware = createMiddleware({
+  locales: LOCALES,
+  defaultLocale: 'hy',
+  localeDetection: true,
+});
 
-  // Extract locale from the URL (e.g., "/en/some-route" -> "en")
-  const urlLocaleMatch = req.nextUrl.pathname.match(/^\/(en|hy|ru)/);
-  const urlLocale: Locales | undefined = urlLocaleMatch ? (urlLocaleMatch[1] as Locales) : undefined;
+export default async function proxy(req: NextRequest) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const { pathname } = req.nextUrl;
 
-  // If the locale in the cookie doesn't match the URL locale, redirect
-  if (urlLocale && urlLocale !== cookieLocale) {
-    const newUrl = new URL(req.nextUrl.origin);
-    newUrl.pathname = `/${cookieLocale}${req.nextUrl.pathname.substring(3)}`;
-    newUrl.search = req.nextUrl.search;
-    return NextResponse.redirect(newUrl);
-  }
+  // Helper to check if the current path matches any route in our arrays (with locale support)
+  const isMatch = (routes: string[]) => {
+    const localePrefix = `(/(${LOCALES.join('|')}))?`;
+    // Creates a regex like: ^(/(en|hy|ru))?(/profile|/settings)(/.*)?$
+    const regex = new RegExp(`^${localePrefix}(${routes.join('|')})(/.*)?$`, 'i');
+    return regex.test(pathname);
+  };
 
-  const token = await getToken({ req, secret });
-  const pathname = req.nextUrl.pathname;
-
-  if (/^\/(en|hy|ru)?\/?profile(\/|$)/.test(pathname)) {
-    // @ts-ignore
-    if (!token || token.userData?.role !== 'user') {
-      return NextResponse.redirect(new URL('/auth/sign-in', req.url));
+  // 2. Protect Private Routes
+  if (isMatch(PROTECTED_ROUTES)) {
+    if (!token) {
+      // Redirect to login if no session exists
+      const loginUrl = new URL('/login', req.url);
+      return NextResponse.redirect(loginUrl);
     }
   }
 
-  // Check if the user is authenticated
-  // const session = req.cookies.get('next-auth.session-token') || req.cookies.get('__Secure-next-auth.session-token');
-  // Redirect authenticated users away from public pages to the profile
-  // const excludePattern = `^(/(${LOCALES.join('|')}))?/profile/?.*?$`;
-  // const isPublicPage = !new RegExp(excludePattern, 'i').test(req.nextUrl.pathname);
+  // 3. Redirect Logged-in Users away from Guest Routes
+  if (isMatch(GUEST_ONLY_ROUTES)) {
+    if (token) {
+      // Redirect to home if they are already logged in
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+  }
 
-  // if (session && isPublicPage) {
-  //   return NextResponse.redirect(new URL('/profile', req.url));
-  // }
-
-  // Middleware to handle internationalization
-  const intlMiddleware = createMiddleware({
-    locales: LOCALES,
-    defaultLocale: cookieLocale,
-    localeDetection: false,
-  });
-
+  // 4. Internationalization
   return intlMiddleware(req);
-};
-
-const authMiddleware = withAuth(
-  async function onSuccess(req: NextRequest) {
-    return handleLocaleMiddleware(req);
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => {
-        return token != null;
-      },
-    },
-    pages: {
-      signIn: '/auth/sign-in',
-    },
-  }
-);
-
-export default function proxy(req: NextRequest) {
-  const excludePattern = `^(/(${LOCALES.join('|')}))?/profile/?.*?$`;
-  const isPublicPage = !new RegExp(excludePattern, 'i').test(req.nextUrl.pathname);
-
-  if (isPublicPage) {
-    return handleLocaleMiddleware(req);
-  } else {
-    return (authMiddleware as any)(req);
-  }
 }
 
 export const config = {
