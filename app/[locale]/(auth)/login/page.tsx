@@ -65,6 +65,14 @@ export default function LoginPage() {
     }
   };
 
+  const googleLogin = async () => {
+    await signIn('google', { redirect: true, callbackUrl: '/' });
+  };
+
+  const faceBookLogin = async () => {
+    await signIn('facebook', { redirect: true, callbackUrl: '/' });
+  };
+
   return (
     <>
       <div className="text-center">
@@ -128,11 +136,21 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <Button variant="outline" type="button" className="flex items-center justify-center gap-2 font-medium">
+        <Button
+          variant="outline"
+          type="button"
+          className="flex items-center justify-center gap-2 font-medium"
+          onClick={googleLogin}
+        >
           <span className="text-lg">G</span>
           {t('google')}
         </Button>
-        <Button variant="outline" type="button" className="flex items-center justify-center gap-2 font-medium">
+        <Button
+          variant="outline"
+          type="button"
+          className="flex items-center justify-center gap-2 font-medium"
+          onClick={faceBookLogin}
+        >
           <span className="text-lg">f</span>
           {t('facebook')}
         </Button>

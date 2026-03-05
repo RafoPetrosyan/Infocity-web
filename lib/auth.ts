@@ -113,18 +113,19 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         try {
-          const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/sign-social`, {
-            email: profile.email,
-            social_id: account.providerAccountId,
-          });
+          const response = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${account.provider === 'google' ? 'google-sign-in' : 'facebook-sign-in'}`,
+            {
+              token: account.provider === 'google' ? account.id_token : account.access_token,
+            }
+          );
 
           token = {
-            accessToken: response?.data.data.accessToken,
-            refreshToken: response?.data.data.refreshToken,
+            accessToken: response?.data.access_token,
+            refreshToken: response?.data.refresh_token,
             userData: {
-              ...response?.data.data.user,
-              avatar: token.picture,
-              role: response?.data.data.user.role || 'user',
+              ...response?.data.user,
+              role: response?.data.user.role || 'user',
             },
           };
         } catch (error: any) {
