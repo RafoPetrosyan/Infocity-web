@@ -36,7 +36,7 @@ httpClient.interceptors.request.use(async (config: InternalAxiosRequestConfig): 
   const accessToken = localStorage.getItem('accessToken') || '';
   if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 
-  config.headers['locale'] = localStorage.getItem(LANGUAGE_STORAGE_KEY) || 'hy';
+  config.headers['Accept-Language'] = localStorage.getItem(LANGUAGE_STORAGE_KEY) || 'hy';
 
   return config;
 });

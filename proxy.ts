@@ -36,7 +36,8 @@ export default async function proxy(req: NextRequest) {
 
   // 3. Redirect Logged-in Users away from Guest Routes
   if (isMatch(GUEST_ONLY_ROUTES)) {
-    if (token) {
+    // @ts-ignore
+    if (token && token.userData?.emotion_ids.length > 0 && token.userData.city_id) {
       // Redirect to home if they are already logged in
       return NextResponse.redirect(new URL('/', req.url));
     }

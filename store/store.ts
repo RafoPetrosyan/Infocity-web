@@ -1,17 +1,18 @@
 import { authApi } from '@/store/auth';
+import { globalApi } from '@/store/global';
 import { configureStore } from '@reduxjs/toolkit';
 
 import auth from './auth/reducer';
-import { uploadApi } from '@/store/upload';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       auth,
       [authApi.reducerPath]: authApi.reducer,
-      [uploadApi.reducerPath]: uploadApi.reducer,
+      [globalApi.reducerPath]: globalApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, uploadApi.middleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(authApi.middleware, globalApi.middleware),
   });
 };
 

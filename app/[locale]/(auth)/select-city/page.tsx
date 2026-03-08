@@ -1,34 +1,30 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from '@/i18n/routing';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CITIES, type City } from '@/lib/cities';
-
-type LocaleKey = 'en' | 'hy' | 'ru';
+import { useGetCitiesQuery } from '@/store/global';
+import type { City } from '@/store/global/types';
 
 export default function SelectCityPage() {
   const t = useTranslations('Auth');
   const router = useRouter();
-  const locale = useLocale() as LocaleKey;
+  const { data: cities = [], isLoading: isLoadingCities } = useGetCitiesQuery();
   const [search, setSearch] = useState('');
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [loading, setLoading] = useState(false);
 
   const filteredCities = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return CITIES;
-    return CITIES.filter(
+    if (!q) return cities;
+    return cities.filter(
       (city) =>
-        city.name.en.toLowerCase().includes(q) ||
-        city.name.hy.toLowerCase().includes(q) ||
-        city.name.ru.toLowerCase().includes(q)
+        city.name.toLowerCase().includes(q) || city.slug.toLowerCase().includes(q)
     );
-  }, [search]);
+  }, [cities, search]);
 
   const handleSelect = useCallback((city: City) => {
     setSelectedCity((prev) => (prev?.id === city.id ? null : city));
@@ -68,7 +64,9 @@ export default function SelectCityPage() {
         <div className="relative">
           <span className="text-sm font-medium">{t('selectCityLabel')}</span>
           <div className="mt-2 max-h-[240px] overflow-y-auto rounded-2xl border border-[var(--color-border)] bg-white">
-            {filteredCities.length === 0 ? (
+            {isLoadingCities ? (
+              <p className="py-8 text-center text-sm text-[var(--color-muted)]">{t('loading')}</p>
+            ) : filteredCities.length === 0 ? (
               <p className="py-8 text-center text-sm text-[var(--color-muted)]">{t('noCitiesFound')}</p>
             ) : (
               <ul role="listbox" aria-label={t('selectCityLabel')} className="divide-y divide-[var(--color-border)]">
@@ -100,7 +98,7 @@ export default function SelectCityPage() {
                             </svg>
                           )}
                         </span>
-                        <span>{city.name[locale] ?? city.name.en}</span>
+                        <span>{city.name}</span>
                       </button>
                     </li>
                   );
@@ -110,7 +108,13 @@ export default function SelectCityPage() {
           </div>
         </div>
 
-        <Button type="button" className="w-full" disabled={!selectedCity} loading={loading} onClick={onSubmit}>
+        <Button
+          type="button"
+          className="w-full"
+          disabled={!selectedCity || isLoadingCities}
+          loading={loading}
+          onClick={onSubmit}
+        >
           {t('continueButton')}
         </Button>
       </div>

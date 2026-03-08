@@ -1,19 +1,18 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
 import { useCallback, useState } from 'react';
 import { useRouter } from '@/i18n/routing';
 
+import { EmotionIcon } from '@/components/emotion-icon';
 import { Button } from '@/components/ui/button';
-import { EMOTIONS, EmotionIcon, type Emotion } from '@/lib/emotions';
-
-type LocaleKey = 'en' | 'hy' | 'ru';
+import { useGetEmotionsQuery } from '@/store/global';
+import type { Emotion } from '@/store/global/types';
 
 export default function SelectEmotionPage() {
   const t = useTranslations('Auth');
   const router = useRouter();
-  const locale = useLocale() as LocaleKey;
+  const { data: emotions = [], isLoading: isLoadingEmotions } = useGetEmotionsQuery();
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(false);
 
@@ -50,7 +49,10 @@ export default function SelectEmotionPage() {
 
       <div className="mt-8 space-y-4">
         <div className="grid grid-cols-2 gap-3">
-          {EMOTIONS.map((emotion) => {
+          {isLoadingEmotions ? (
+            <p className="col-span-2 py-8 text-center text-sm text-[var(--color-muted)]">{t('loading')}</p>
+          ) : (
+            emotions.map((emotion) => {
             const isSelected = selectedIds.has(emotion.id);
             return (
               <button
@@ -66,14 +68,21 @@ export default function SelectEmotionPage() {
               >
                 <EmotionIcon emotion={emotion} selected={isSelected} />
                 <span className={`text-sm font-medium ${isSelected ? 'text-white' : 'text-[var(--color-muted)]'}`}>
-                  {emotion.label[locale] ?? emotion.label.en}
+                  {emotion.name}
                 </span>
               </button>
             );
-          })}
+          })
+          )}
         </div>
 
-        <Button type="button" className="w-full" disabled={selectedIds.size === 0} loading={loading} onClick={onSubmit}>
+        <Button
+          type="button"
+          className="w-full"
+          disabled={selectedIds.size === 0 || isLoadingEmotions}
+          loading={loading}
+          onClick={onSubmit}
+        >
           {t('continueButton')}
         </Button>
       </div>

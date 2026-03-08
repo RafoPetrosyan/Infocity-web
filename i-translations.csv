@@ -53,6 +53,7 @@ Auth,searchCityLabel,Search city,Քաղաքի որոնում,Поиск горо
 Auth,searchCityPlaceholder,Type to search...,Որոնել...,Введите для поиска...
 Auth,selectCityLabel,Cities,Քաղաքներ,Города
 Auth,noCitiesFound,No cities found,Քաղաքներ չեն գտնվել,Города не найдены
+Auth,loading,Loading...,Բեռնվում է...,Загрузка...
 Auth,continueButton,Continue,Շարունակել,Продолжить
 Auth,selectEmotionTitle,How are you feeling?,Ինչպե՞ս եք զգում,Как вы себя чувствуете?
 Auth,selectEmotionSubtitle,Choose emotions that describe your vibe.,Ընտրեք ձեր տրամադրությունը նկարագրող զգացմունքները.,"Выберите эмоции, описывающие ваше настроение."
