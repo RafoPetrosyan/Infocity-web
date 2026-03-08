@@ -1,51 +1,41 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useRef, useState } from "react";
+import Image from 'next/image';
+import { useRef, useState } from 'react';
 
 export default function Home() {
   const navItems = [
-    { label: "Home", count: undefined, active: true, icon: "🏠" },
-    { label: "Attractions", count: 76, icon: "🎡" },
-    { label: "Hotels", count: 84, icon: "🏨" },
-    { label: "Eat", count: 112, icon: "🍽️" },
-    { label: "Tourism", count: 38, icon: "🧭" },
-    { label: "Vacation spots", count: 40, icon: "🌴" },
-    { label: "Entertainment", count: 50, icon: "🎭" },
-    { label: "Transport", count: 17, icon: "🚌" },
-    { label: "Refills", count: 22, icon: "⛽" },
+    { label: 'Home', count: undefined, active: true, icon: '🏠' },
+    { label: 'Attractions', count: 76, icon: '🎡' },
+    { label: 'Hotels', count: 84, icon: '🏨' },
+    { label: 'Eat', count: 112, icon: '🍽️' },
+    { label: 'Tourism', count: 38, icon: '🧭' },
+    { label: 'Vacation spots', count: 40, icon: '🌴' },
+    { label: 'Entertainment', count: 50, icon: '🎭' },
+    { label: 'Transport', count: 17, icon: '🚌' },
+    { label: 'Refills', count: 22, icon: '⛽' },
     {
-      label: "Store",
+      label: 'Store',
       count: 171,
-      icon: "🛍️",
-      subItems: [
-        "Supermarkets",
-        "Grocery",
-        "Coffee",
-        "Beer",
-        "Sweets",
-        "Shop",
-        "Hardware",
-        "Furniture",
-        "Electronics",
-      ],
+      icon: '🛍️',
+      subItems: ['Supermarkets', 'Grocery', 'Coffee', 'Beer', 'Sweets', 'Shop', 'Hardware', 'Furniture', 'Electronics'],
     },
     {
-      label: "Services",
+      label: 'Services',
       count: 221,
-      icon: "🧰",
-      subItems: ["Cosmetics and perfumes", "For baby", "Jewelry and accessories", "Flowers"],
+      icon: '🧰',
+      subItems: ['Cosmetics and perfumes', 'For baby', 'Jewelry and accessories', 'Flowers'],
     },
-    { label: "Production", count: 63, icon: "🏭" },
-    { label: "Medicine", count: 112, icon: "🩺" },
+    { label: 'Production', count: 63, icon: '🏭' },
+    { label: 'Medicine', count: 112, icon: '🩺' },
   ];
 
-  const chips = ["Calm", "Drive", "Romance", "Work", "Discovery", "Fun", "Respect"];
+  const chips = ['Calm', 'Drive', 'Romance', 'Work', 'Discovery', 'Fun', 'Respect'];
 
   const compactCards = [
-    { title: "Scorpions / event fub", tag: "I'm going", attendees: 288 },
-    { title: "Open air brunch", tag: "I'm going", attendees: 96 },
-    { title: "City food market", tag: "I'm going", attendees: 154 },
+    { title: 'Scorpions / event fub', tag: "I'm going", attendees: 288 },
+    { title: 'Open air brunch', tag: "I'm going", attendees: 96 },
+    { title: 'City food market', tag: "I'm going", attendees: 154 },
   ];
 
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
@@ -65,7 +55,7 @@ export default function Home() {
         <header className="flex flex-col gap-4 py-6 md:py-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
-              <img src="/Logo.png" alt="IMCITY logo" width={32} height={32} />
+              <img src="/favicon.ico" alt="IMCITY logo" width={32} height={32} />
             </div>
             <div>
               <p className="text-sm text-[var(--color-muted)]">Location</p>
@@ -88,7 +78,7 @@ export default function Home() {
             </div>
             <div className="flex items-center justify-between gap-2 md:justify-end">
               <div className="flex items-center gap-2">
-                {["📅", "🤍", "🔔"].map((icon) => (
+                {['📅', '🤍', '🔔'].map((icon) => (
                   <button
                     key={icon}
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-lg shadow-sm transition hover:-translate-y-0.5"
@@ -141,18 +131,18 @@ export default function Home() {
                       }}
                       className={`flex w-full items-center justify-between rounded-2xl px-4 py-2 text-left text-sm transition ${
                         item.active
-                          ? "bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
-                          : "text-[var(--color-ink)] hover:bg-[var(--color-pill)]"
+                          ? 'bg-[var(--color-primary-soft)] text-[var(--color-primary)]'
+                          : 'text-[var(--color-ink)] hover:bg-[var(--color-pill)]'
                       }`}
-                      aria-haspopup={hasSubmenu ? "menu" : undefined}
+                      aria-haspopup={hasSubmenu ? 'menu' : undefined}
                       aria-expanded={hasSubmenu ? isOpen : undefined}
                     >
                       <span className="flex items-center gap-2">
                         <span
                           className={`flex h-7 w-7 items-center justify-center rounded-xl text-sm ${
                             item.active
-                              ? "bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
-                              : "bg-[var(--color-pill)] text-[var(--color-muted)]"
+                              ? 'bg-[var(--color-primary-soft)] text-[var(--color-primary)]'
+                              : 'bg-[var(--color-pill)] text-[var(--color-muted)]'
                           }`}
                         >
                           {item.icon}
@@ -220,8 +210,8 @@ export default function Home() {
                   key={chip}
                   className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
                     index === 1
-                      ? "bg-[var(--color-pill-active)] text-[var(--color-accent)]"
-                      : "bg-[var(--color-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                      ? 'bg-[var(--color-pill-active)] text-[var(--color-accent)]'
+                      : 'bg-[var(--color-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                   }`}
                 >
                   {chip}
@@ -274,8 +264,8 @@ export default function Home() {
                       <div
                         className={`h-40 ${
                           index === 0
-                            ? "bg-gradient-to-br from-amber-400 via-orange-500 to-red-500"
-                            : "bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500"
+                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500'
+                            : 'bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500'
                         }`}
                       />
                       <div className="absolute left-4 top-4 flex gap-2 text-xs font-semibold text-white">
@@ -311,8 +301,8 @@ export default function Home() {
                     <div
                       className={`h-44 ${
                         index === 0
-                          ? "bg-gradient-to-br from-fuchsia-400 via-pink-500 to-rose-500"
-                          : "bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500"
+                          ? 'bg-gradient-to-br from-fuchsia-400 via-pink-500 to-rose-500'
+                          : 'bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500'
                       }`}
                     />
                     <div className="absolute left-4 top-4 flex gap-2 text-xs font-semibold text-white">

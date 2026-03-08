@@ -109,7 +109,7 @@ httpClient.interceptors.response.use(
         processQueue(refreshError, null);
         isRefreshing = false;
 
-        // await logoutUser();
+        await logoutUser();
         return Promise.reject(refreshError);
       }
     }

@@ -120,9 +120,9 @@ export default function LoginPage() {
           {/*  {t("rememberMe")}*/}
           {/*</label>*/}
           <span></span>
-          <a href="/forgot-password" className="font-medium text-[var(--color-primary)] transition hover:opacity-80">
+          <Link href="/forgot-password" className="font-medium text-[var(--color-primary)] transition hover:opacity-80">
             {t('forgotPasswordLink')}
-          </a>
+          </Link>
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting} loading={loading}>
           {t('signInButton')}

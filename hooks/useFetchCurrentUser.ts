@@ -4,15 +4,22 @@ import { useSession } from 'next-auth/react';
 import { setCurrentUser } from '@/store/auth/reducer';
 import httpClient from '@/lib/httpClient';
 import type { User } from '@/store/auth/types';
+import { useLocale } from 'next-intl';
+import { LANGUAGE_STORAGE_KEY } from '@/constants';
 
 /**
  * Fetches current user from API once on first load, updates NextAuth session
  * and Redux. Runs only when user is authenticated.
  */
 export function useFetchCurrentUser() {
+  const locale = useLocale();
   const { data: session, status, update } = useSession();
   const dispatch = useAppDispatch();
   const hasFetched = useRef(false);
+
+  useEffect(() => {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, locale);
+  }, [locale]);
 
   useEffect(() => {
     if (status !== 'authenticated' || !session?.user) return;

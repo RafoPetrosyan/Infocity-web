@@ -38,11 +38,11 @@ export default async function RootLayout({ children, params }: Readonly<LayoutPr
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StoreProvider>
-          <SessionWrapper>
-            <LocalizationProvider locale={locale as Locales}>
-              <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
-            </LocalizationProvider>
-          </SessionWrapper>
+          <LocalizationProvider locale={locale as Locales}>
+            <NextIntlClientProvider messages={messages}>
+              <SessionWrapper>{children}</SessionWrapper>
+            </NextIntlClientProvider>
+          </LocalizationProvider>
         </StoreProvider>
       </body>
     </html>
