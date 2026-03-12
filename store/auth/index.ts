@@ -1,6 +1,8 @@
 import { axiosBaseQuery } from '@/store/customBaseQuery';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type {
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
   RegisterRequest,
   RegisterResponse,
   ResendEmailCodeRequest,
@@ -11,6 +13,8 @@ import type {
   UpdateProfileResponse,
   VerifyEmailRequest,
   VerifyEmailResponse,
+  VerifyForgotPasswordCodeRequest,
+  VerifyForgotPasswordCodeResponse,
 } from './types';
 
 export const authApi = createApi({
@@ -52,6 +56,20 @@ export const authApi = createApi({
         data,
       }),
     }),
+    forgotPassword: builder.mutation<ForgotPasswordResponse, ForgotPasswordRequest>({
+      query: (data) => ({
+        url: '/users/forgot-password',
+        method: 'POST',
+        data,
+      }),
+    }),
+    verifyForgotPasswordCode: builder.mutation<VerifyForgotPasswordCodeResponse, VerifyForgotPasswordCodeRequest>({
+      query: (data) => ({
+        url: '/users/verify-forgot-password-code',
+        method: 'POST',
+        data,
+      }),
+    }),
   }),
 });
 
@@ -61,4 +79,6 @@ export const {
   useVerifyEmailMutation,
   useResendEmailCodeMutation,
   useUpdateProfileMutation,
+  useForgotPasswordMutation,
+  useVerifyForgotPasswordCodeMutation,
 } = authApi;

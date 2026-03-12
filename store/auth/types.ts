@@ -74,3 +74,21 @@ export interface UpdateProfileResponse {
   message: string;
   user?: User;
 }
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  message: string;
+  verification_token: string;
+}
+
+export interface VerifyForgotPasswordCodeRequest {
+  code: string;
+  token: string;
+}
+
+export interface VerifyForgotPasswordCodeResponse {
+  message: string;
+}

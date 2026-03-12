@@ -92,7 +92,7 @@ export default function VerifyEmailPage() {
 
         if (signInResult?.ok) {
           await update({ userData: result.user });
-          router.push('/select-city');
+          router.push('/');
         } else {
           toast.error(signInResult?.error || t('verifyError'));
           router.push('/login');

@@ -31,6 +31,12 @@ Auth,signInLink,Sign in,Մուտք գործել,Войти
 Auth,forgotTitle,Forgot password,Մոռացել եք գաղտնաբառը,Забыли пароль
 Auth,forgotSubtitle,Enter your email and we'll send a reset link.,"Մուտքագրեք ձեր էլ. փոստը, և մենք կուղարկենք վերականգնման հղումը.","Введите эл. почту, и мы отправим ссылку для сброса."
 Auth,sendResetLink,Send reset link,Ուղարկել վերականգնման հղումը,Отправить ссылку для сброса
+Auth,forgotCodeSubtitle,We sent a 6-digit code to your email. Enter it below to reset your password.,Մենք ձեր էլ. փոստին ուղարկել ենք 6-նիշանոց կոդ։ Մուտքագրեք այն ներքևում՝ ձեր գաղտնաբառը վերականգնելու համար.,"Мы отправили 6-значный код на вашу эл. почту. Введите его ниже, чтобы сбросить пароль."
+Auth,verifyCodeButton,Verify code,Հաստատել կոդը,Подтвердить код
+Auth,forgotCodeSuccess,Verification code sent. Check your email.,Հաստատման կոդն ուղարկվել է: Ստուգեք ձեր էլ. փոստը:,Код подтверждения отправлен. Проверьте эл. почту.
+Auth,forgotVerifySuccess,Code verified. You can now sign in with a new password.,Կոդը հաստատվել է: Այժմ կարող եք մուտք գործել նոր գաղտնաբառով:,Код подтверждён. Теперь вы можете войти с новым паролем.
+Auth,forgotVerifyError,Verification failed. Please try again.,Հաստատումը ձախողվել է: Կրկին փորձեք:,Подтверждение не удалось. Попробуйте снова.
+Auth,changeEmail,Use different email,Օգտագործել այլ էլ. փոստ,Использовать другой эл. адрес
 Auth,rememberedPassword,Remembered your password?,Հիշեցիք գաղտնաբառը,Вспомнили пароль?
 Auth,backToSignIn,Back to sign in,Վերադառնալ մուտքին,Назад ко входу
 Auth,verifyTitle,Confirm your email,Հաստատեք ձեր էլ. փոստը,Подтвердите эл. почту
