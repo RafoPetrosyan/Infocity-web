@@ -40,6 +40,12 @@ Auth,verificationCodePlaceholder,••••••,••••••,•••
 Auth,verifyEmailButton,Verify email,Հաստատել էլ. փոստը,Подтвердить эл. почту
 Auth,didntReceiveCode,Didn't receive the code?,Չե՞ք ստացել կոդը,Не получили код?
 Auth,resend,Resend,Կրկին ուղարկել,Отправить снова
+Auth,resending,Sending...,Ուղարկվում է...,Отправляется...
+Auth,resendSuccess,Verification code sent. Please check your email.,Հաստատման կոդն ուղարկվել է: Ստուգեք ձեր էլ. փոստը:,Код подтверждения отправлен. Проверьте эл. почту.
+Auth,resendError,Failed to resend code. Please try again.,Կոդը կրկին ուղարկելը ձախողվել է: Կրկին փորձեք:,Не удалось отправить код. Попробуйте снова.
+Auth,verifySuccess,Email verified successfully!,Էլ. փոստը հաջողությամբ հաստատվել է:,Эл. почта успешно подтверждена!
+Auth,verifyError,Verification failed. Please try again.,Հաստատումը ձախողվել է: Կրկին փորձեք:,Подтверждение не удалось. Попробуйте снова.
+Auth,verifyTokenMissing,Verification token is missing. Please restart the verification process.,Հաստատման նշանը բացակայում է: Կրկին սկսեք հաստատման գործընթացը:,Отсутствует токен подтверждения. Перезапустите процесс подтверждения.
 Auth,validationRequired,This field is required,This field is required,This field is required
 Auth,validationEmail,Enter a valid email,Enter a valid email,Enter a valid email
 Auth,validationPasswordMin,Password must be at least 8 characters,Password must be at least 8 characters,Password must be at least 8 characters
@@ -47,6 +53,7 @@ Auth,validationFirstNameMin,First name must be at least 2 characters,First name 
 Auth,validationLastNameMin,Last name must be at least 2 characters,Last name must be at least 2 characters,Last name must be at least 2 characters
 Auth,validationPasswordMatch,Passwords do not match,Passwords do not match,Passwords do not match
 Auth,validationCodeLength,Enter the 6-digit code,Enter the 6-digit code,Enter the 6-digit code
+Auth,updateProfileError,Failed to save. Please try again.,Պահպանումը ձախողվել է: Կրկին փորձեք:,Не удалось сохранить. Попробуйте снова.
 Auth,selectCityTitle,Select your city,Ընտրեք ձեր քաղաքը,Выберите город
 Auth,selectCitySubtitle,Choose the city you live in or want to explore.,"Ընտրեք այն քաղաքը, որտեղ ապրում կամ ուզում եք ճանաչել:","Выберите город, в котором живёте или хотите исследовать."
 Auth,searchCityLabel,Search city,Քաղաքի որոնում,Поиск города
@@ -56,4 +63,5 @@ Auth,noCitiesFound,No cities found,Քաղաքներ չեն գտնվել,Горо
 Auth,loading,Loading...,Բեռնվում է...,Загрузка...
 Auth,continueButton,Continue,Շարունակել,Продолжить
 Auth,selectEmotionTitle,How are you feeling?,Ինչպե՞ս եք զգում,Как вы себя чувствуете?
-Auth,selectEmotionSubtitle,Choose emotions that describe your vibe.,Ընտրեք ձեր տրամադրությունը նկարագրող զգացմունքները.,"Выберите эмоции, описывающие ваше настроение."
+Auth,selectEmotionSubtitle,Choose up to 3 emotions that describe your vibe (at least one required).,Ընտրեք մինչև 3 զգացմունք ձեր տրամադրությունը նկարագրելու համար (պահանջվում է առնվազն մեկը).,Выберите до 3 эмоций, описывающих ваше настроение (требуется минимум одна).
+Auth,selectEmotionSelected,selected,ընտրված,выбрано

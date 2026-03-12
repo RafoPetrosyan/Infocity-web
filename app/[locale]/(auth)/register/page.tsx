@@ -2,10 +2,12 @@
 
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Link } from '@/i18n/routing';
+import { Link, useRouter } from '@/i18n/routing';
+import { useSignUpMutation } from '@/store/auth';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -19,6 +21,8 @@ type RegisterFormValues = {
 
 export default function RegisterPage() {
   const t = useTranslations('Auth');
+  const router = useRouter();
+  const [signUp, { isLoading }] = useSignUpMutation();
   const {
     register,
     handleSubmit,
@@ -34,8 +38,25 @@ export default function RegisterPage() {
     },
   });
 
-  const onSubmit = (data: RegisterFormValues) => {
-    void data;
+  const onSubmit = async (data: RegisterFormValues) => {
+    try {
+      const result = await signUp({
+        email: data.email,
+        password: data.password,
+        first_name: data.firstName,
+        last_name: data.lastName,
+      }).unwrap();
+
+      if (result.verification_token) {
+        router.push(`/verify-email?token=${encodeURIComponent(result.verification_token)}`);
+      } else {
+        toast.error('Registration failed. Please try again.');
+      }
+    } catch (e: unknown) {
+      const err = e as { data?: { message?: string } };
+      const message = err.data?.message;
+      toast.error(message || 'Unable to create account. Please try again.');
+    }
   };
 
   const passwordValue = watch('password');
@@ -103,7 +124,7 @@ export default function RegisterPage() {
             {...register('password', {
               required: t('validationRequired'),
               minLength: {
-                value: 8,
+                value: 6,
                 message: t('validationPasswordMin'),
               },
             })}
@@ -120,7 +141,7 @@ export default function RegisterPage() {
             })}
           />
         </div>
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full" disabled={isSubmitting} loading={isLoading}>
           {t('createAccountButton')}
         </Button>
       </form>

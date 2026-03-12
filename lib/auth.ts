@@ -30,6 +30,13 @@ export const authOptions: NextAuthOptions = {
             };
           }
 
+          if (credentials.mode === 'verify') {
+            return {
+              accessToken: credentials.accessToken,
+              refreshToken: credentials.refreshToken,
+            };
+          }
+
           const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/sign-in`, {
             email: credentials?.email,
             password: credentials?.password,
@@ -72,6 +79,11 @@ export const authOptions: NextAuthOptions = {
           return `${process.env.NEXTAUTH_URL}verify-email?token=${(user as any).verificationToken}`;
         }
 
+        // Allow verify mode (email verification success) - establish session
+        if ((user as any).accessToken) {
+          return true;
+        }
+
         return true; // ✅ allow login
       }
 
@@ -105,7 +117,10 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.accessToken;
         // @ts-ignore
         token.refreshToken = user.refreshToken;
-        token.userData = user;
+        // Only set userData when user has profile fields (skip for verify/update which pass only tokens)
+        if ((user as any).id !== undefined || (user as any).email) {
+          token.userData = user;
+        }
         return token;
       }
 
@@ -170,6 +185,6 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   pages: {
-    signIn: '/auth/sign-in',
+    signIn: '/login',
   },
 };

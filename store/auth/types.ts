@@ -32,3 +32,45 @@ export interface RegisterRequest {
   password_confirmation: string;
   lang_code?: string;
 }
+
+export interface SignUpRequest {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+}
+
+export interface SignUpResponse {
+  message: string;
+  verification_token: string;
+}
+
+export interface VerifyEmailRequest {
+  token: string;
+  code: string;
+}
+
+export interface VerifyEmailResponse {
+  message: string;
+  user: User;
+  access_token: string;
+  refresh_token: string;
+}
+
+export interface ResendEmailCodeRequest {
+  token: string;
+}
+
+export interface ResendEmailCodeResponse {
+  message: string;
+}
+
+export interface UpdateProfileRequest {
+  city_id?: number;
+  emotion_ids?: string;
+}
+
+export interface UpdateProfileResponse {
+  message: string;
+  user?: User;
+}

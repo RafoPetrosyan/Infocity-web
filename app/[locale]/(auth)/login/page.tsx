@@ -3,14 +3,12 @@
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Link, useRouter } from '@/i18n/routing';
-
-import 'react-toastify/dist/ReactToastify.css';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -162,7 +160,6 @@ export default function LoginPage() {
           {t('createOne')}
         </Link>
       </p>
-      <ToastContainer position="top-right" autoClose={4000} />
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import React, { ReactNode } from 'react';
 import { SessionProvider } from 'next-auth/react';
+import { ToastContainer } from 'react-toastify';
 import { useFetchCurrentUser } from '@/hooks/useFetchCurrentUser';
 
 interface SessionWrapperProps {
@@ -18,6 +19,7 @@ export const SessionWrapper: React.FC<SessionWrapperProps> = ({ children }) => {
     <SessionProvider>
       <CurrentUserSync />
       {children}
+      <ToastContainer position="top-right" autoClose={4000} />
     </SessionProvider>
   );
 };

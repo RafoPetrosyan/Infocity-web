@@ -3,19 +3,23 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from '@/i18n/routing';
+import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useGetCitiesQuery } from '@/store/global';
+import { useUpdateProfileMutation } from '@/store/auth';
 import type { City } from '@/store/global/types';
 
 export default function SelectCityPage() {
   const t = useTranslations('Auth');
   const router = useRouter();
+  const { update } = useSession();
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
   const { data: cities = [], isLoading: isLoadingCities } = useGetCitiesQuery();
   const [search, setSearch] = useState('');
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const filteredCities = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -30,17 +34,19 @@ export default function SelectCityPage() {
     setSelectedCity((prev) => (prev?.id === city.id ? null : city));
   }, []);
 
-  const onSubmit = async () => {
+  const onSubmit = useCallback(async () => {
     if (!selectedCity) return;
-    setLoading(true);
     try {
-      // TODO: persist city_id to user profile / session
-      // For now, redirect to main
-      router.replace('/');
-    } finally {
-      setLoading(false);
+      const result = await updateProfile({ city_id: selectedCity.id }).unwrap();
+      if (result.user) {
+        await update({ userData: result.user });
+      }
+      router.replace('/select-emotion');
+    } catch (e: unknown) {
+      const err = e as { data?: { message?: string } };
+      toast.error(err.data?.message || t('updateProfileError') || 'Failed to save. Please try again.');
     }
-  };
+  }, [selectedCity, updateProfile, update, router, t]);
 
   return (
     <>
@@ -112,7 +118,7 @@ export default function SelectCityPage() {
           type="button"
           className="w-full"
           disabled={!selectedCity || isLoadingCities}
-          loading={loading}
+          loading={isUpdating}
           onClick={onSubmit}
         >
           {t('continueButton')}
