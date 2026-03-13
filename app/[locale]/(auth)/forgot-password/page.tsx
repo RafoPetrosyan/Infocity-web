@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from '@/i18n/routing';
 import { useRouter } from '@/i18n/routing';
-import { useForgotPasswordMutation, useVerifyForgotPasswordCodeMutation } from '@/store/auth';
+import { useForgotPasswordMutation, useVerifyForgotPasswordCodeMutation, useResetPasswordMutation } from '@/store/auth';
 import { FORGOT_PASSWORD_RESEND_COOLDOWN_KEY } from '@/constants';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -46,15 +46,21 @@ type VerifyCodeValues = {
   code: string;
 };
 
+type NewPasswordValues = {
+  password: string;
+  confirmPassword: string;
+};
+
 export default function ForgotPasswordPage() {
   const t = useTranslations('Auth');
   const router = useRouter();
-  const [step, setStep] = useState<'email' | 'code'>('email');
+  const [step, setStep] = useState<'email' | 'code' | 'password'>('email');
   const [verificationToken, setVerificationToken] = useState<string | null>(null);
   const [email, setEmail] = useState<string>('');
 
   const [forgotPassword, { isLoading: isSendingCode }] = useForgotPasswordMutation();
   const [verifyForgotPasswordCode, { isLoading: isVerifying }] = useVerifyForgotPasswordCodeMutation();
+  const [resetPassword, { isLoading: isResetting }] = useResetPasswordMutation();
   const [cooldownSeconds, setCooldownSeconds] = useState(() => getRemainingCooldownSeconds());
 
   const emailForm = useForm<ForgotPasswordValues>({
@@ -63,6 +69,10 @@ export default function ForgotPasswordPage() {
 
   const codeForm = useForm<VerifyCodeValues>({
     defaultValues: { code: '' },
+  });
+
+  const passwordForm = useForm<NewPasswordValues>({
+    defaultValues: { password: '', confirmPassword: '' },
   });
 
   useEffect(() => {
@@ -103,14 +113,33 @@ export default function ForgotPasswordPage() {
       try {
         await verifyForgotPasswordCode({ code: data.code, token: verificationToken }).unwrap();
         toast.success(t('forgotVerifySuccess'));
-        router.push('/login');
+        setStep('password');
       } catch (e: unknown) {
         const err = e as { data?: { message?: string } };
         const message = err.data?.message;
         toast.error(message || t('forgotVerifyError'));
       }
     },
-    [verificationToken, verifyForgotPasswordCode, router, t]
+    [verificationToken, verifyForgotPasswordCode, t]
+  );
+
+  const onPasswordSubmit = useCallback(
+    async (data: NewPasswordValues) => {
+      if (!verificationToken) {
+        toast.error(t('verifyTokenMissing'));
+        return;
+      }
+      try {
+        await resetPassword({ token: verificationToken, password: data.password }).unwrap();
+        toast.success(t('resetPasswordSuccess'));
+        router.push('/login');
+      } catch (e: unknown) {
+        const err = e as { data?: { message?: string } };
+        const message = err.data?.message;
+        toast.error(message || t('resetPasswordError'));
+      }
+    },
+    [verificationToken, resetPassword, router, t]
   );
 
   const handleResend = useCallback(async () => {
@@ -144,7 +173,9 @@ export default function ForgotPasswordPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-muted)]">{t('brand')}</p>
         <h1 className="mt-3 text-2xl font-semibold">{t('forgotTitle')}</h1>
         <p className="mt-2 text-sm text-[var(--color-muted)]">
-          {step === 'email' ? t('forgotSubtitle') : t('forgotCodeSubtitle')}
+          {step === 'email' && t('forgotSubtitle')}
+          {step === 'code' && t('forgotCodeSubtitle')}
+          {step === 'password' && t('setNewPasswordSubtitle')}
         </p>
       </div>
 
@@ -175,7 +206,7 @@ export default function ForgotPasswordPage() {
             </Button>
           </form>
         </>
-      ) : (
+      ) : step === 'code' ? (
         <>
           <form className="mt-8 space-y-4" onSubmit={codeForm.handleSubmit(onCodeSubmit)}>
             <Input
@@ -231,6 +262,45 @@ export default function ForgotPasswordPage() {
               </button>
             </p>
           </div>
+        </>
+      ) : (
+        <>
+          <form className="mt-8 space-y-4" onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}>
+            <Input
+              id="new-password"
+              label={t('passwordLabel')}
+              type="password"
+              placeholder={t('createPasswordPlaceholder')}
+              error={passwordForm.formState.errors.password?.message}
+              {...passwordForm.register('password', {
+                required: t('validationRequired'),
+                minLength: {
+                  value: 6,
+                  message: t('validationPasswordMin'),
+                },
+              })}
+            />
+            <Input
+              id="confirm-password"
+              label={t('confirmPasswordLabel')}
+              type="password"
+              placeholder={t('confirmPasswordPlaceholder')}
+              error={passwordForm.formState.errors.confirmPassword?.message}
+              {...passwordForm.register('confirmPassword', {
+                required: t('validationRequired'),
+                validate: (value) =>
+                  value === passwordForm.getValues('password') || t('validationPasswordMatch'),
+              })}
+            />
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={passwordForm.formState.isSubmitting || !verificationToken}
+              loading={isResetting}
+            >
+              {t('setNewPasswordButton')}
+            </Button>
+          </form>
         </>
       )}
 

@@ -7,6 +7,8 @@ import type {
   RegisterResponse,
   ResendEmailCodeRequest,
   ResendEmailCodeResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
   SignUpRequest,
   SignUpResponse,
   UpdateProfileRequest,
@@ -70,6 +72,13 @@ export const authApi = createApi({
         data,
       }),
     }),
+    resetPassword: builder.mutation<ResetPasswordResponse, ResetPasswordRequest>({
+      query: (data) => ({
+        url: '/users/reset-password',
+        method: 'POST',
+        data,
+      }),
+    }),
   }),
 });
 
@@ -81,4 +90,5 @@ export const {
   useUpdateProfileMutation,
   useForgotPasswordMutation,
   useVerifyForgotPasswordCodeMutation,
+  useResetPasswordMutation,
 } = authApi;

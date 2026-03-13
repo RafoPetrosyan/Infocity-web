@@ -92,3 +92,12 @@ export interface VerifyForgotPasswordCodeRequest {
 export interface VerifyForgotPasswordCodeResponse {
   message: string;
 }
+
+export interface ResetPasswordRequest {
+  token: string;
+  password: string;
+}
+
+export interface ResetPasswordResponse {
+  message: string;
+}
