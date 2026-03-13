@@ -64,12 +64,12 @@ export default function RegisterPage() {
   return (
     <>
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-muted)]">{t('brand')}</p>
-        <h1 className="mt-3 text-2xl font-semibold">{t('registerTitle')}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)] sm:tracking-[0.3em]">{t('brand')}</p>
+        <h1 className="mt-3 text-xl font-semibold sm:text-2xl">{t('registerTitle')}</h1>
         <p className="mt-2 text-sm text-[var(--color-muted)]">{t('registerSubtitle')}</p>
       </div>
 
-      <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="mt-6 space-y-4 sm:mt-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <Input
             id="register-first-name"
@@ -152,7 +152,7 @@ export default function RegisterPage() {
         <span className="h-px flex-1 bg-[var(--color-border)]" />
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Button variant="outline" type="button" className="flex items-center justify-center gap-2 font-medium">
           <span className="text-lg">G</span>
           {t('google')}

@@ -53,16 +53,16 @@ export default function SelectEmotionPage() {
   return (
     <>
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-muted)]">{t('brand')}</p>
-        <h1 className="mt-3 text-2xl font-semibold">{t('selectEmotionTitle')}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)] sm:tracking-[0.3em]">{t('brand')}</p>
+        <h1 className="mt-3 text-xl font-semibold sm:text-2xl">{t('selectEmotionTitle')}</h1>
         <p className="mt-2 text-sm text-[var(--color-muted)]">{t('selectEmotionSubtitle')}</p>
       </div>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-6 space-y-4 sm:mt-8">
         <p className="text-center text-xs text-[var(--color-muted)]">
           {selectedIds.size}/3 {t('selectEmotionSelected')}
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-3">
           {isLoadingEmotions ? (
             <p className="col-span-2 py-8 text-center text-sm text-[var(--color-muted)]">{t('loading')}</p>
           ) : (
@@ -73,7 +73,7 @@ export default function SelectEmotionPage() {
                   key={emotion.id}
                   type="button"
                   onClick={() => handleToggle(emotion)}
-                  className={`flex min-h-[56px] w-full items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left transition cursor-pointer ${
+                  className={`flex min-h-[52px] w-full min-w-0 touch-manipulation items-center gap-2 rounded-2xl border-2 px-3 py-2.5 text-left transition cursor-pointer sm:min-h-[56px] sm:gap-3 sm:px-4 sm:py-3 active:scale-[0.98] ${
                     isSelected
                       ? 'border-transparent'
                       : 'border-[var(--color-border)] bg-white hover:border-[var(--color-border)]/80'
@@ -81,7 +81,7 @@ export default function SelectEmotionPage() {
                   style={isSelected ? { backgroundColor: emotion.color } : undefined}
                 >
                   <EmotionIcon emotion={emotion} selected={isSelected} />
-                  <span className={`text-sm font-medium ${isSelected ? 'text-white' : 'text-[var(--color-muted)]'}`}>
+                  <span className={`min-w-0 break-words text-sm font-medium ${isSelected ? 'text-white' : 'text-[var(--color-muted)]'}`}>
                     {emotion.name}
                   </span>
                 </button>

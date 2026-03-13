@@ -51,12 +51,12 @@ export default function SelectCityPage() {
   return (
     <>
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-muted)]">{t('brand')}</p>
-        <h1 className="mt-3 text-2xl font-semibold">{t('selectCityTitle')}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)] sm:tracking-[0.3em]">{t('brand')}</p>
+        <h1 className="mt-3 text-xl font-semibold sm:text-2xl">{t('selectCityTitle')}</h1>
         <p className="mt-2 text-sm text-[var(--color-muted)]">{t('selectCitySubtitle')}</p>
       </div>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-6 space-y-4 sm:mt-8">
         <Input
           id="city-search"
           label={t('searchCityLabel')}
@@ -69,7 +69,7 @@ export default function SelectCityPage() {
 
         <div className="relative">
           <span className="text-sm font-medium">{t('selectCityLabel')}</span>
-          <div className="mt-2 max-h-[240px] overflow-y-auto rounded-2xl border border-[var(--color-border)] bg-white">
+          <div className="mt-2 max-h-[200px] overflow-y-auto overflow-x-hidden rounded-2xl border border-[var(--color-border)] bg-white sm:max-h-[240px]">
             {isLoadingCities ? (
               <p className="py-8 text-center text-sm text-[var(--color-muted)]">{t('loading')}</p>
             ) : filteredCities.length === 0 ? (
@@ -83,7 +83,7 @@ export default function SelectCityPage() {
                       <button
                         type="button"
                         onClick={() => handleSelect(city)}
-                        className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition hover:bg-[var(--color-page)] cursor-pointer ${
+                        className={`flex min-h-[48px] w-full touch-manipulation items-center gap-3 px-4 py-3 text-left text-sm transition hover:bg-[var(--color-page)] cursor-pointer active:bg-[var(--color-page)] ${
                           isSelected ? 'bg-[var(--color-primary-soft)] font-medium text-[var(--color-primary)]' : ''
                         }`}
                       >

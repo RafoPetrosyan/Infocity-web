@@ -126,12 +126,12 @@ export default function VerifyEmailPage() {
   return (
     <>
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-muted)]">{t('brand')}</p>
-        <h1 className="mt-3 text-2xl font-semibold">{t('verifyTitle')}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)] sm:tracking-[0.3em]">{t('brand')}</p>
+        <h1 className="mt-3 text-xl font-semibold sm:text-2xl">{t('verifyTitle')}</h1>
         <p className="mt-2 text-sm text-[var(--color-muted)]">{t('verifySubtitle')}</p>
       </div>
 
-      <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="mt-6 space-y-4 sm:mt-8" onSubmit={handleSubmit(onSubmit)}>
         <Input
           id="verify-code"
           label={t('verificationCodeLabel')}
@@ -154,7 +154,7 @@ export default function VerifyEmailPage() {
         </Button>
       </form>
 
-      <div className="mt-6 text-center text-sm text-[var(--color-muted)]">
+      <div className="mt-6 text-center text-sm text-[var(--color-muted)] sm:text-base">
         {t('didntReceiveCode')}{' '}
         <button
           type="button"

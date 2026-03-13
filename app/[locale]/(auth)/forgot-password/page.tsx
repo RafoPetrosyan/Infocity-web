@@ -170,8 +170,8 @@ export default function ForgotPasswordPage() {
   return (
     <>
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-muted)]">{t('brand')}</p>
-        <h1 className="mt-3 text-2xl font-semibold">{t('forgotTitle')}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)] sm:tracking-[0.3em]">{t('brand')}</p>
+        <h1 className="mt-3 text-xl font-semibold sm:text-2xl">{t('forgotTitle')}</h1>
         <p className="mt-2 text-sm text-[var(--color-muted)]">
           {step === 'email' && t('forgotSubtitle')}
           {step === 'code' && t('forgotCodeSubtitle')}
@@ -181,7 +181,7 @@ export default function ForgotPasswordPage() {
 
       {step === 'email' ? (
         <>
-          <form className="mt-8 space-y-4" onSubmit={emailForm.handleSubmit(onEmailSubmit)}>
+          <form className="mt-6 space-y-4 sm:mt-8" onSubmit={emailForm.handleSubmit(onEmailSubmit)}>
             <Input
               id="forgot-email"
               label={t('emailLabel')}
@@ -208,7 +208,7 @@ export default function ForgotPasswordPage() {
         </>
       ) : step === 'code' ? (
         <>
-          <form className="mt-8 space-y-4" onSubmit={codeForm.handleSubmit(onCodeSubmit)}>
+          <form className="mt-6 space-y-4 sm:mt-8" onSubmit={codeForm.handleSubmit(onCodeSubmit)}>
             <Input
               id="verify-code"
               label={t('verificationCodeLabel')}
@@ -236,7 +236,7 @@ export default function ForgotPasswordPage() {
             </Button>
           </form>
 
-          <div className="mt-6 space-y-4 text-center text-sm text-[var(--color-muted)]">
+          <div className="mt-6 space-y-4 text-center text-sm text-[var(--color-muted)] sm:text-base">
             <p>
               {t('didntReceiveCode')}{' '}
               <button
@@ -265,7 +265,7 @@ export default function ForgotPasswordPage() {
         </>
       ) : (
         <>
-          <form className="mt-8 space-y-4" onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}>
+          <form className="mt-6 space-y-4 sm:mt-8" onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}>
             <Input
               id="new-password"
               label={t('passwordLabel')}

@@ -61,7 +61,7 @@ export default function LanguageSwitcher(): React.JSX.Element {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="cursor-pointer flex items-center gap-2 rounded-full border-2 border-white/30 bg-white/10 px-2 py-1.5 shadow-md ring-2 ring-white/20 transition hover:border-white/50 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-primary)]"
+        className="flex min-h-[44px] min-w-[44px] touch-manipulation cursor-pointer items-center gap-2 rounded-full border-2 border-white/30 bg-white/10 px-2 py-1.5 shadow-md ring-2 ring-white/20 transition hover:border-white/50 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-primary)]"
         aria-expanded={isOpen}
         aria-haspopup="listbox"
       >
