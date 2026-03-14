@@ -1,10 +1,17 @@
 'use client';
 
+import Image from 'next/image';
+
 export default function Home() {
+  const testImages = [
+    '/00a529f4a75bf5586c0810c4dc7941c0a8ece2e7.jpg',
+    '/7a6be63614de24d5d217ac0b4c888512d27f144e.jpg',
+  ];
+
   const compactCards = [
-    { title: 'Scorpions / event fub', tag: "I'm going", attendees: 288 },
-    { title: 'Open air brunch', tag: "I'm going", attendees: 96 },
-    { title: 'City food market', tag: "I'm going", attendees: 154 },
+    { title: 'Scorpions / event fub', tag: "I'm going", attendees: 288, image: testImages[0] },
+    { title: 'Open air brunch', tag: "I'm going", attendees: 96, image: testImages[1] },
+    { title: 'City food market', tag: "I'm going", attendees: 154, image: testImages[0] },
   ];
 
   return (
@@ -18,7 +25,15 @@ export default function Home() {
           <button className="absolute right-6 top-6 z-10 rounded-full bg-black/40 px-2 py-1 text-xs text-white">
             ♡
           </button>
-          <div className="h-80 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500" />
+          <div className="relative h-80">
+              <Image
+                src={testImages[0]}
+                alt="Scorpions event"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1280px) 100vw, 66vw"
+              />
+            </div>
           <div className="space-y-3 p-6">
             <div className="flex items-center gap-2">
               <span className="rounded-full bg-[var(--color-primary)] px-3 py-1 text-xs font-semibold text-white">
@@ -51,13 +66,15 @@ export default function Home() {
               className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm"
             >
               <div className="relative">
-                <div
-                  className={`h-40 ${
-                    index === 0
-                      ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500'
-                      : 'bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-500'
-                  }`}
-                />
+                <div className="relative h-40">
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1280px) 100vw, 33vw"
+                  />
+                </div>
                 <div className="absolute left-4 top-4 flex gap-2 text-xs font-semibold text-white">
                   <span className="rounded-full bg-black/45 px-3 py-1">May 25 | 19:00</span>
                   <span className="rounded-full bg-black/45 px-3 py-1">2 day</span>
@@ -88,13 +105,15 @@ export default function Home() {
             className="overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm"
           >
             <div className="relative">
-              <div
-                className={`h-44 ${
-                  index === 0
-                    ? 'bg-gradient-to-br from-fuchsia-400 via-pink-500 to-rose-500'
-                    : 'bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500'
-                }`}
-              />
+              <div className="relative h-44">
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
               <div className="absolute left-4 top-4 flex gap-2 text-xs font-semibold text-white">
                 <span className="rounded-full bg-black/45 px-3 py-1">May 25 | 19:00</span>
                 <span className="rounded-full bg-black/45 px-3 py-1">2 day</span>
