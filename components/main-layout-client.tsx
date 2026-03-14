@@ -13,7 +13,9 @@ interface MainLayoutClientProps {
 
 export function MainLayoutClient({ categories, emotions, children }: MainLayoutClientProps): React.JSX.Element {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
-  const [selectedEmotionId, setSelectedEmotionId] = useState<number | null>(emotions[0]?.id ?? null);
+  const [selectedEmotionIds, setSelectedEmotionIds] = useState<number[]>(
+    () => (emotions[0]?.id != null ? [emotions[0].id] : []),
+  );
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -236,12 +238,23 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                 className="scrollbar-hidden flex flex-1 gap-2 overflow-x-auto overflow-y-hidden py-1 min-w-0"
               >
                 {emotions.map((emotion) => {
-                  const isSelected = selectedEmotionId === emotion.id;
+                  const isSelected = selectedEmotionIds.includes(emotion.id);
                   return (
                     <button
                       key={emotion.id}
                       type="button"
-                      onClick={() => setSelectedEmotionId(emotion.id)}
+                      onClick={() => {
+                        setSelectedEmotionIds((prev) => {
+                          const idx = prev.indexOf(emotion.id);
+                          if (idx !== -1) {
+                            return prev.filter((id) => id !== emotion.id);
+                          }
+                          if (prev.length < 3) {
+                            return [...prev, emotion.id];
+                          }
+                          return [...prev.slice(0, -1), emotion.id];
+                        });
+                      }}
                       className={`cursor-pointer flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition ${
                         isSelected ? 'text-white' : 'bg-[var(--color-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                       }`}
