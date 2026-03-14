@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AvatarDropdown } from '@/components/avatar-dropdown';
 import { EmotionIcon } from '@/components/emotion-icon';
 import type { Category, Emotion } from '@/store/global/types';
@@ -14,7 +14,30 @@ interface MainLayoutClientProps {
 export function MainLayoutClient({ categories, emotions, children }: MainLayoutClientProps): React.JSX.Element {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [selectedEmotionId, setSelectedEmotionId] = useState<number | null>(emotions[0]?.id ?? null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const emotionsScrollRef = useRef<HTMLDivElement>(null);
+
+  const updateScrollArrows = useCallback(() => {
+    const el = emotionsScrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    const el = emotionsScrollRef.current;
+    if (!el) return;
+    updateScrollArrows();
+    const ro = new ResizeObserver(updateScrollArrows);
+    ro.observe(el);
+    el.addEventListener('scroll', updateScrollArrows);
+    return () => {
+      ro.disconnect();
+      el.removeEventListener('scroll', updateScrollArrows);
+    };
+  }, [emotions.length, updateScrollArrows]);
 
   const clearCloseTimeout = () => {
     if (closeTimeout.current) {
@@ -46,7 +69,7 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
             </div>
             <div>
               <p className="text-sm text-[var(--color-muted)]">Location</p>
-              <button className="flex items-center gap-2 text-lg font-semibold">
+              <button type="button" className="cursor-pointer flex items-center gap-2 text-lg font-semibold">
                 Yerevan
                 <span className="text-[var(--color-muted)]">▼</span>
               </button>
@@ -68,7 +91,8 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                 {['📅', '🤍', '🔔'].map((icon) => (
                   <button
                     key={icon}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-lg shadow-sm transition hover:-translate-y-0.5"
+                    type="button"
+                    className="cursor-pointer flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-lg shadow-sm transition hover:-translate-y-0.5"
                   >
                     {icon}
                   </button>
@@ -80,13 +104,13 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
         </header>
 
         <div className="flex gap-6 pb-12">
-          {/* Sidebar Menu */}
-          <aside className="w-full max-w-[260px] shrink-0 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm">
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold">Menu</h2>
-              <p className="text-sm text-[var(--color-muted)]">Explore categories</p>
+          {/* Sidebar Menu - Categories */}
+          <aside className="w-full max-w-[260px] shrink-0 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg">
+            <div className="rounded-t-3xl bg-gradient-to-br from-[var(--color-primary-soft)]/60 to-[var(--color-surface)] px-6 py-5">
+              <h2 className="text-lg font-semibold text-[var(--color-ink)]">Menu</h2>
+              <p className="mt-0.5 text-sm text-[var(--color-muted)]">Explore categories</p>
             </div>
-            <nav className="space-y-1">
+            <nav className="space-y-1 p-4 pt-2">
               {navItems.map((item) => {
                 const hasSubmenu = Boolean(item.subCategories?.length);
                 const isOpen = openSubmenu === item.label;
@@ -113,7 +137,7 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                         if (!hasSubmenu) return;
                         setOpenSubmenu(isOpen ? null : item.label);
                       }}
-                      className={`flex w-full items-center justify-between rounded-2xl px-4 py-2 text-left text-sm transition ${
+                      className={`cursor-pointer flex w-full items-center justify-between rounded-2xl px-4 py-2.5 text-left text-sm transition ${
                         item.active
                           ? 'bg-[var(--color-primary-soft)] text-[var(--color-primary)]'
                           : 'text-[var(--color-ink)] hover:bg-[var(--color-pill)]'
@@ -155,7 +179,7 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                             <li key={subItem.id}>
                               <button
                                 type="button"
-                                className="flex w-full items-center justify-between rounded-2xl px-4 py-2 text-left text-[var(--color-ink)] hover:bg-[var(--color-pill)]"
+                                className="cursor-pointer flex w-full items-center justify-between rounded-2xl px-4 py-2 text-left text-[var(--color-ink)] hover:bg-[var(--color-pill)]"
                               >
                                 <span className="flex items-center gap-2">
                                   <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-[var(--color-pill)] text-[var(--color-muted)]">
@@ -174,12 +198,18 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                 );
               })}
             </nav>
-            <div className="mt-6 space-y-2 border-t border-[var(--color-border)] pt-4">
-              <button className="flex w-full items-center justify-between rounded-2xl px-4 py-2 text-left text-sm text-[var(--color-ink)] hover:bg-[var(--color-pill)]">
+            <div className="space-y-1 border-t border-[var(--color-border)] p-4">
+              <button
+                type="button"
+                className="cursor-pointer flex w-full items-center justify-between rounded-2xl px-4 py-2.5 text-left text-sm text-[var(--color-ink)] hover:bg-[var(--color-pill)]"
+              >
                 My business
                 <span className="text-[var(--color-muted)]">›</span>
               </button>
-              <button className="flex w-full items-center justify-between rounded-2xl px-4 py-2 text-left text-sm text-[var(--color-ink)] hover:bg-[var(--color-pill)]">
+              <button
+                type="button"
+                className="cursor-pointer flex w-full items-center justify-between rounded-2xl px-4 py-2.5 text-left text-sm text-[var(--color-ink)] hover:bg-[var(--color-pill)]"
+              >
                 Create page
                 <span className="text-[var(--color-muted)]">›</span>
               </button>
@@ -189,24 +219,51 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
           {/* Main content */}
           <main className="w-full min-w-0 flex-1 space-y-6">
             {/* Emotions section */}
-            <section className="flex flex-wrap items-center gap-3 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm">
-              {emotions.map((emotion) => {
-                const isSelected = selectedEmotionId === emotion.id;
-                return (
-                  <button
-                    key={emotion.id}
-                    type="button"
-                    onClick={() => setSelectedEmotionId(emotion.id)}
-                    className={`flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
-                      isSelected ? 'text-white' : 'bg-[var(--color-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)]'
-                    }`}
-                    style={isSelected ? { backgroundColor: emotion.color } : undefined}
-                  >
-                    <EmotionIcon emotion={emotion} selected={isSelected} />
-                    {emotion.name}
-                  </button>
-                );
-              })}
+            <section className="flex items-center gap-2 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm">
+              <button
+                type="button"
+                onClick={() => {
+                  emotionsScrollRef.current?.scrollBy({ left: -120, behavior: 'smooth' });
+                }}
+                disabled={!canScrollLeft}
+                className="cursor-pointer flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted)] shadow-sm transition hover:bg-[var(--color-pill)] hover:text-[var(--color-ink)] disabled:opacity-40 disabled:pointer-events-none"
+                aria-label="Scroll left"
+              >
+                ‹
+              </button>
+              <div
+                ref={emotionsScrollRef}
+                className="scrollbar-hidden flex flex-1 gap-2 overflow-x-auto overflow-y-hidden py-1 min-w-0"
+              >
+                {emotions.map((emotion) => {
+                  const isSelected = selectedEmotionId === emotion.id;
+                  return (
+                    <button
+                      key={emotion.id}
+                      type="button"
+                      onClick={() => setSelectedEmotionId(emotion.id)}
+                      className={`cursor-pointer flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                        isSelected ? 'text-white' : 'bg-[var(--color-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)]'
+                      }`}
+                      style={isSelected ? { backgroundColor: emotion.color } : undefined}
+                    >
+                      <EmotionIcon emotion={emotion} selected={isSelected} size="sm" />
+                      {emotion.name}
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  emotionsScrollRef.current?.scrollBy({ left: 120, behavior: 'smooth' });
+                }}
+                disabled={!canScrollRight}
+                className="cursor-pointer flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted)] shadow-sm transition hover:bg-[var(--color-pill)] hover:text-[var(--color-ink)] disabled:opacity-40 disabled:pointer-events-none"
+                aria-label="Scroll right"
+              >
+                ›
+              </button>
             </section>
 
             {children}

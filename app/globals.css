@@ -26,3 +26,21 @@ body {
   color: var(--foreground);
   /*font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;*/
 }
+
+/* Pointer cursor for all clickable elements */
+button,
+a,
+[role="button"],
+[role="menuitem"],
+[tabindex="0"]:not([tabindex="-1"]) {
+  cursor: pointer;
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}

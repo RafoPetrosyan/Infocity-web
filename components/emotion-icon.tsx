@@ -39,17 +39,27 @@ const ICON_SVG_MAP: Record<
 
 const DEFAULT_ICON_COLOR = 'var(--color-muted)';
 
-export function EmotionIcon({ emotion, selected }: { emotion: Emotion; selected: boolean }) {
+export function EmotionIcon({
+  emotion,
+  selected,
+  size = 'md',
+}: {
+  emotion: Emotion;
+  selected: boolean;
+  size?: 'sm' | 'md';
+}) {
   const iconDef = ICON_SVG_MAP[emotion.icon];
   if (!iconDef) return null;
 
   const color = selected ? '#ffffff' : DEFAULT_ICON_COLOR;
+  const dimension = size === 'sm' ? 16 : 24;
+  const containerClass = size === 'sm' ? 'h-4 w-4' : 'h-6 w-6';
 
   return (
-    <span className="flex h-6 w-6 shrink-0 items-center justify-center" style={{ color }}>
+    <span className={`flex shrink-0 items-center justify-center ${containerClass}`} style={{ color }}>
       <svg
-        width={24}
-        height={24}
+        width={dimension}
+        height={dimension}
         viewBox={iconDef.viewBox}
         fill="none"
         preserveAspectRatio="xMidYMid meet"
