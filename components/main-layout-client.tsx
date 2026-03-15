@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AvatarDropdown } from '@/components/avatar-dropdown';
 import { EmotionIcon } from '@/components/emotion-icon';
+import LanguageSwitcher from '@/components/language-switcher';
 import type { Category, Emotion } from '@/store/global/types';
 
 interface MainLayoutClientProps {
@@ -90,7 +91,8 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
             </div>
             <div className="flex items-center justify-between gap-2 md:justify-end">
               <div className="flex items-center gap-2">
-                {['📅', '🤍', '🔔'].map((icon) => (
+                <LanguageSwitcher variant="header" />
+                {['🤍', '🔔'].map((icon) => (
                   <button
                     key={icon}
                     type="button"

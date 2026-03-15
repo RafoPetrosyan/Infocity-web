@@ -29,7 +29,11 @@ const LOCALE_ABBREV: Record<string, string> = {
   ru: 'RU',
 };
 
-export default function LanguageSwitcher(): React.JSX.Element {
+interface LanguageSwitcherProps {
+  variant?: 'default' | 'header';
+}
+
+export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitcherProps): React.JSX.Element {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -56,31 +60,46 @@ export default function LanguageSwitcher(): React.JSX.Element {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const isHeader = variant === 'header';
+
   return (
     <div ref={containerRef} className="relative">
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex min-h-[44px] min-w-[44px] touch-manipulation cursor-pointer items-center gap-2 rounded-full border-2 border-white/30 bg-white/10 px-2 py-1.5 shadow-md ring-2 ring-white/20 transition hover:border-white/50 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-primary)]"
+        className={
+          isHeader
+            ? 'cursor-pointer flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-lg shadow-sm transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2'
+            : 'flex min-h-[44px] min-w-[44px] touch-manipulation cursor-pointer items-center gap-2 rounded-full border-2 border-white/30 bg-white/10 px-2 py-1.5 shadow-md ring-2 ring-white/20 transition hover:border-white/50 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-primary)]'
+        }
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        aria-label={isHeader ? 'Switch language' : undefined}
       >
-        <span className="flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
-          <Image
-            src={currentFlag}
-            alt={LOCALE_LABELS[locale] ?? locale}
-            width={32}
-            height={32}
-            className="h-full w-full object-cover"
-          />
-        </span>
-        <span className="text-sm font-semibold text-white">{LOCALE_ABBREV[locale] ?? locale.toUpperCase()}</span>
-        <span
-          className={`shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          style={{ filter: 'brightness(0) invert(1)' }}
-        >
-          <Image src={ChevronDownIcon} alt="" width={16} height={16} />
-        </span>
+        {isHeader ? (
+          <span className="text-[var(--color-ink)]" title={LOCALE_LABELS[locale] ?? locale}>
+            🌐
+          </span>
+        ) : (
+          <>
+            <span className="flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
+              <Image
+                src={currentFlag}
+                alt={LOCALE_LABELS[locale] ?? locale}
+                width={32}
+                height={32}
+                className="h-full w-full object-cover"
+              />
+            </span>
+            <span className="text-sm font-semibold text-white">{LOCALE_ABBREV[locale] ?? locale.toUpperCase()}</span>
+            <span
+              className={`shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+              style={{ filter: 'brightness(0) invert(1)' }}
+            >
+              <Image src={ChevronDownIcon} alt="" width={16} height={16} />
+            </span>
+          </>
+        )}
       </button>
 
       {isOpen && (
