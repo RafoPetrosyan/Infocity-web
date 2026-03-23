@@ -49,6 +49,48 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
     }
   };
 
+  const scheduleSubmenuClose = () => {
+    clearCloseTimeout();
+    closeTimeout.current = setTimeout(() => setOpenSubmenu(null), 120);
+  };
+
+  const handleNavItemEnter = (label: string, hasSubmenu: boolean) => {
+    if (!hasSubmenu) return;
+    clearCloseTimeout();
+    setOpenSubmenu(label);
+  };
+
+  const handleNavItemLeave = (hasSubmenu: boolean) => {
+    if (!hasSubmenu) return;
+    scheduleSubmenuClose();
+  };
+
+  const handleNavItemClick = (label: string, hasSubmenu: boolean, isOpen: boolean) => {
+    if (!hasSubmenu) return;
+    setOpenSubmenu(isOpen ? null : label);
+  };
+
+  const scrollEmotionsLeft = () => {
+    emotionsScrollRef.current?.scrollBy({ left: -120, behavior: 'smooth' });
+  };
+
+  const scrollEmotionsRight = () => {
+    emotionsScrollRef.current?.scrollBy({ left: 120, behavior: 'smooth' });
+  };
+
+  const handleEmotionToggle = (emotionId: number) => {
+    setSelectedEmotionIds((prev) => {
+      const idx = prev.indexOf(emotionId);
+      if (idx !== -1) {
+        return prev.filter((id) => id !== emotionId);
+      }
+      if (prev.length < 3) {
+        return [...prev, emotionId];
+      }
+      return [...prev.slice(0, -1), emotionId];
+    });
+  };
+
   const navItems = [
     { label: 'Home', slug: null, count: undefined, active: true, icon: '🏠', subCategories: [] as Category['sub_categories'] },
     ...categories.map((c) => ({
@@ -122,25 +164,12 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                   <div
                     key={item.label}
                     className="relative"
-                    onMouseEnter={() => {
-                      if (!hasSubmenu) return;
-                      clearCloseTimeout();
-                      setOpenSubmenu(item.label);
-                    }}
-                    onMouseLeave={() => {
-                      if (!hasSubmenu) return;
-                      clearCloseTimeout();
-                      closeTimeout.current = setTimeout(() => {
-                        setOpenSubmenu(null);
-                      }, 120);
-                    }}
+                    onMouseEnter={() => handleNavItemEnter(item.label, hasSubmenu)}
+                    onMouseLeave={() => handleNavItemLeave(hasSubmenu)}
                   >
                     <button
                       type="button"
-                      onClick={() => {
-                        if (!hasSubmenu) return;
-                        setOpenSubmenu(isOpen ? null : item.label);
-                      }}
+                      onClick={() => handleNavItemClick(item.label, hasSubmenu, isOpen)}
                       className={`cursor-pointer flex w-full items-center justify-between rounded-2xl px-4 py-2.5 text-left text-sm transition ${
                         item.active
                           ? 'bg-[var(--color-primary-soft)] text-[var(--color-primary)]'
@@ -171,12 +200,7 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                       <div
                         className="absolute left-full top-0 z-20 ml-3 w-[260px] rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-xl"
                         onMouseEnter={clearCloseTimeout}
-                        onMouseLeave={() => {
-                          clearCloseTimeout();
-                          closeTimeout.current = setTimeout(() => {
-                            setOpenSubmenu(null);
-                          }, 120);
-                        }}
+                        onMouseLeave={scheduleSubmenuClose}
                       >
                         <ul className="space-y-1 text-sm">
                           {item.subCategories.map((subItem) => (
@@ -226,9 +250,7 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
             <section className="flex items-center gap-2 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm">
               <button
                 type="button"
-                onClick={() => {
-                  emotionsScrollRef.current?.scrollBy({ left: -120, behavior: 'smooth' });
-                }}
+                onClick={scrollEmotionsLeft}
                 disabled={!canScrollLeft}
                 className="cursor-pointer flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted)] shadow-sm transition hover:bg-[var(--color-pill)] hover:text-[var(--color-ink)] disabled:opacity-40 disabled:pointer-events-none"
                 aria-label="Scroll left"
@@ -245,18 +267,7 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
                     <button
                       key={emotion.id}
                       type="button"
-                      onClick={() => {
-                        setSelectedEmotionIds((prev) => {
-                          const idx = prev.indexOf(emotion.id);
-                          if (idx !== -1) {
-                            return prev.filter((id) => id !== emotion.id);
-                          }
-                          if (prev.length < 3) {
-                            return [...prev, emotion.id];
-                          }
-                          return [...prev.slice(0, -1), emotion.id];
-                        });
-                      }}
+                      onClick={() => handleEmotionToggle(emotion.id)}
                       className={`cursor-pointer flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition ${
                         isSelected ? 'text-white' : 'bg-[var(--color-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                       }`}
@@ -270,9 +281,7 @@ export function MainLayoutClient({ categories, emotions, children }: MainLayoutC
               </div>
               <button
                 type="button"
-                onClick={() => {
-                  emotionsScrollRef.current?.scrollBy({ left: 120, behavior: 'smooth' });
-                }}
+                onClick={scrollEmotionsRight}
                 disabled={!canScrollRight}
                 className="cursor-pointer flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted)] shadow-sm transition hover:bg-[var(--color-pill)] hover:text-[var(--color-ink)] disabled:opacity-40 disabled:pointer-events-none"
                 aria-label="Scroll right"
