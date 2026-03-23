@@ -44,3 +44,39 @@ a,
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
+
+/* Mobile menu drawer - backdrop */
+.mobile-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--color-ink) 40%, transparent);
+  backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease;
+}
+.mobile-drawer-backdrop[data-state="closed"] {
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Mobile menu drawer - panel */
+.mobile-drawer-panel {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: 50;
+  width: min(320px, 85vw);
+  overflow-y: auto;
+  background: var(--color-surface);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  transform: translateX(0);
+  transition: transform 0.3s ease-out;
+}
+.mobile-drawer-panel[data-state="closed"] {
+  transform: translateX(-100%);
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.menu-open {
+  overflow: hidden;
+}
