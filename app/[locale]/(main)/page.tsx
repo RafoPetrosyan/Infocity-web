@@ -229,7 +229,7 @@ export default function Home() {
                     <span className="text-xs text-[var(--color-muted)]">{featuredItem.attendees}</span>
                   </div>
                 )}
-                {(isPlace(featuredItem) || isBusiness(featuredItem)) && featuredItem.address && (
+                {isPlace(featuredItem) && featuredItem.address && (
                   <p className="text-xs text-[var(--color-muted)]">{featuredItem.address}</p>
                 )}
                 <h3 className="text-xl font-semibold">{featuredItem.title}</h3>
