@@ -13,6 +13,7 @@ async function fetchLayoutData(locale: string): Promise<{ categories: Category[]
       fetcher<Category[]>('/categories', { locale }),
       fetcher<Emotion[]>('/emotions', { locale }),
     ]);
+    console.log(categories, 'categories');
     return { categories: categories ?? [], emotions: emotions ?? [] };
   } catch {
     return { categories: [], emotions: [] };
